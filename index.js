@@ -4,9 +4,11 @@ const { Server } = require("socket.io");
 const cors = require('cors');
 
 const app = express();
-app.use(cors({origin: "http://localhost:3000"}));
+const isDev = app.settings.env === 'development';
+const url = isDev ? 'http://localhost:3000' : 'https://sketchpad-liard.vercel.app/';
+app.use(cors({origin: url}));
 const httpServer  = createServer(app);
-const io = new Server(httpServer, {cors: 'http://localhost:3000'});
+const io = new Server(httpServer, {cors: url});
 
 io.on("connection", (socket)=>{
     console.log('server connected');
